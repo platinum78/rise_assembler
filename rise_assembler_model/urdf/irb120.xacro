@@ -282,31 +282,13 @@
             <origin rpy="0 0 0" xyz="0 0 0"/>
         </joint>
 
-        <!-- Description of gripper -->
-        <link name="${prefix}gripper">
-            <visual>
-                <origin xyz="0 0 0" rpy="-1.57079632679 0 1.57079632679" />
-                <geometry>
-                    <mesh filename="package://irb120_description/meshes/visual/EndEffector.SLDPRT.STL" />
-                </geometry>
-                <material name="">
-                    <color rgba="1 1 1 1" />
-                </material>
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="-1.57079632679 0 1.57079632679" />
-                <geometry>
-                    <mesh filename="package://irb120_description/meshes/collision/EndEffector.SLDPRT.STL" />
-                </geometry>
-            </collision>
-            <inertial>
-                <origin xyz="0 0 0" rpy="-1.57079632679 0 1.57079632679" />
-                <mass value="0.01"/>
-                <inertia ixx="1e-08" ixy="0" ixz="0" iyy="1e-08" iyz="0" izz="1e-08"/>
-            </inertial>
-        </link>
+        <!-- Description of the gripper -->
+        <!-- Call the model given from ROBOTIQ -->
+        <xacro:include filename="$(find robotiq_arg2f_model_visualization)/urdf/robotiq_arg2f_140_model_macro.xacro" />
+        <xacro:robotiq_arg2f_140 prefix=""/>
+        
 
-
+        <!-- Robot kinetics parts -->
         <transmission name="${prefix}tran1">
             <type>transmission_interface/SimpleTransmission</type>
             <joint name="${prefix}joint_1">
