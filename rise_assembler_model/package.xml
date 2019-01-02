@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rise_abb_irb120_model</name>
+  <name>rise_assembler_model</name>
   <version>0.0.0</version>
-  <description>The rise_abb_irb120_model package</description>
+  <description>The rise_assembler_model package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

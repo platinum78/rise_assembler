@@ -114,4 +114,6 @@ CATKIN_IGNORE
 # Ignore all local history of files
 .history
 
+rise_assembler_control/include/Eigen/*
+
 # End of https://www.gitignore.io/api/ros,c++,linux,visualstudiocode

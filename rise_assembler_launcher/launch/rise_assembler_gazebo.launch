@@ -10,27 +10,27 @@
 
     <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find rise_assembler_model)/worlds/irb120.world"/>
+        <arg name="world_name" value="$(find rise_assembler_model)/worlds/irb120.world" />
         <arg name="debug" value="$(arg debug)" />
         <arg name="gui" value="$(arg gui)" />
         <arg name="paused" value="$(arg paused)"/>
-        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-        <arg name="headless" value="$(arg headless)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)" />
+        <arg name="headless" value="$(arg headless)" />
         <arg name="verbose" value="true" />
     </include>
 
     <!-- Load the URDF into the ROS Parameter Server -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find rise_assembler_model)/irb120/urdf/irb120.xacro'" />
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find rise_assembler_model)/urdf/rise_assembler.xacro'" />
 
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model irb120 -param robot_description"/>
     
     <rosparam>
-        source_list: [/irb120/joint_states]
+        source_list: [/rise_assembler/irb120/joint_states]
     </rosparam>
 
     <!-- ros_control irb120bot launch file -->
-    <include file="$(find rise_irb120_control)/launch/irb120_control.launch"/>
+    <include file="$(find rise_assembler_control)/launch/irb120_control.launch"/>
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
 
 

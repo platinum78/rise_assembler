@@ -10,7 +10,7 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://robotiq_arg2f_model_visualization/meshes/robotiq_arg2f_base_link_fine.stl" />
+                    <mesh filename="$(find rise_assembler_model)/mesh/gripper/robotiq_arg2f_base_link_fine.stl" />
                 </geometry>
                 <material name="">
                     <color rgba="0.1 0.1 0.1 1" />
@@ -19,7 +19,7 @@
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 ${pi / 2}" />
                 <geometry>
-                    <mesh filename="package://robotiq_arg2f_model_visualization/meshes/robotiq_arg2f_base_link_coarse.stl" />
+                    <mesh filename="$(find rise_assembler_model)/mesh/gripper/robotiq_arg2f_base_link_coarse.stl" />
                 </geometry>
             </collision>
         </link>
