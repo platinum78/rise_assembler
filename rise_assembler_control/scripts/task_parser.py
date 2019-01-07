@@ -4,7 +4,8 @@ from std_msgs.msg import Float64
 
 class TaskParser:
     def __init__(self, script_path):
-        rospy.init_node("task_parser", anonymous=True)
+        rospy.init_node("/task_parser", anonymous=True)
+        self.pub = rospy.Publisher("/")
         self.rate = rospy.Rate(10)
         self.script_path = script_path
         self.configuration = np.zeros(6)
@@ -32,15 +33,16 @@ class TaskParser:
             if line_buf[:4] == "OPEN":
                 # No additional argument is to be given.
                 # Call function for command OPEN.
-                pass
+                print("Open gripper...")
             elif line_buf[:4] == "GRIP":
                 # Given argument is the force by gripper.
                 # Call function for command GRIP.
-                pass
+                print("Close gripper...")
             elif line_buf[:4] == "WAIT":
                 # Given arugment is the time to sleep.
                 # Parse the argument and wait for that time.
                 line_buf = line_buf[line_buf.index('(')+1:line_buf.index(')')]
+                print("Sleep for %f seconds..." % float(line_buf))
                 time.sleep(float(line_buf))
             elif line_buf[:4] == "MOVE":
                 # Given argument is the desired configuration of the robot.
@@ -48,7 +50,7 @@ class TaskParser:
                 line_buf = line_buf[line_buf.index('(')+1:line_buf.index(')')]
                 configuration_buf = [float(x) for x in line_buf.replace(' ','').split(',')]
                 self.configuration = np.array(configuration_buf)
-                pass
+                print("Move to ", self.configuration, "...")
         
         rospy.loginfo("Your requested task is finished!")
 

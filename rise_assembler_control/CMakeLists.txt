@@ -7,7 +7,7 @@ project(rise_assembler_control)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS std_msgs std_srvs geometry_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs std_srvs geometry_msgs rospy trajectory_msgs message_generation)
 
 
 ## System dependencies are found with CMake's conventions
@@ -52,11 +52,11 @@ find_package(catkin REQUIRED COMPONENTS std_msgs std_srvs geometry_msgs)
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
+add_service_files(
+  FILES
+  IRB120_move.srv
 #   Service2.srv
-# )
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -66,10 +66,7 @@ find_package(catkin REQUIRED COMPONENTS std_msgs std_srvs geometry_msgs)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(DEPENDENCIES std_msgs)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -132,7 +129,10 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/temp_node.cpp)
+# add_executable(test_cpp_node src/test_cpp.cpp)
+add_executable(assembler_control_node src/assembler_control.cpp)
+add_executable(irb120_control_node src/irb120_control.cpp)
+add_executable(gripper_control_node src/gripper_control.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,9 +145,10 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+# target_link_libraries(test_cpp_node ${catkin_LIBRARIES})
+target_link_libraries(assembler_control_node ${catkin_LIBRARIES})
+target_link_libraries(irb120_control_node ${catkin_LIBRARIES})
+target_link_libraries(gripper_control_node ${catkin_LIBRARIES})
 
 #############
 ## Install ##
