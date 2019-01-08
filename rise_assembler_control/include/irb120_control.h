@@ -8,18 +8,12 @@
 #include <sensor_msgs/JointState.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
-#include "./Eigen/Dense"
-// #include <Eigen/Dense>
-#include <iomanip>
-
+#include <Eigen/Dense>
+#include "assembler_params.h"
 #include "rise_assembler_control/IRB120_move.h"
-
-#define M_PI 3.14159265358979323846
+// #include "rise_assembler_control/IRB120_move.h"
 #define RAD2DEG(X) (X*180/M_PI)
 #define DEG2RAD(X) (X*M_PI/180)
-
-using namespace Eigen;
-using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
 // CLASS MEMBERS MANIFESTATION
@@ -29,48 +23,53 @@ class IRB120_Controller
 {
   private:
     // Variables for control system
-    VectorXd d;
-    VectorXd a;
-    VectorXd theta;
-    VectorXd theta_target;
-    VectorXd alpha;
-    VectorXd P;
-    VectorXd P_endeffector;
-    MatrixXd R;
-    MatrixXd R_joint;
-    MatrixXd T;
-    MatrixXd T_joint;
-    MatrixXd T_endeffector;
+    Eigen::VectorXd d;
+    Eigen::VectorXd a;
+    Eigen::VectorXd theta;
+    Eigen::VectorXd theta_target;
+    Eigen::VectorXd configuration;
+    Eigen::VectorXd configuration_target;
+    Eigen::VectorXd alpha;
+    Eigen::VectorXd P;
+    Eigen::VectorXd P_endeffector;
+    Eigen::MatrixXd R;
+    Eigen::MatrixXd R_joint;
+    Eigen::MatrixXd T;
+    Eigen::MatrixXd T_joint;
+    Eigen::MatrixXd T_endeffector;
+    Eigen::MatrixXd configurationPath;
     
     // Path storages
-    MatrixXd jointTrajectory;
-    VectorXd timesteps;
+    Eigen::MatrixXd jointTrajectory;
+    Eigen::VectorXd timesteps;
 
     // ROS publisher, subscriber, service server, and message
+    ros::NodeHandle n;
     ros::Publisher joint_trajectory_publisher;
+    ros::Publisher motion_status_publisher;
     ros::Subscriber joint_states_subscriber;
-    ros::ServiceServer irb120_move_service;
+    ros::Subscriber irb120_move_subscriber;
     trajectory_msgs::JointTrajectory message;
 
   public:
-    IRB120_Controller(ros::NodeHandle n);
+    IRB120_Controller(ros::NodeHandle handle);
 
     // Calculation functions
-    MatrixXd getTransMatrix(double, double, double, double);
-    MatrixXd getHomoTransMatrix(MatrixXd, VectorXd, VectorXd, VectorXd);
-    MatrixXd getR03(VectorXd);
-    void forwardKinematicsSolver(VectorXd);
-    void inverseKinematicsSolver(MatrixXd);
-    MatrixXd pathGen();
-    MatrixXd path2Profile();
+    Eigen::MatrixXd getTransMatrix(double, double, double, double);
+    Eigen::MatrixXd getHomoTransMatrix(Eigen::MatrixXd, Eigen::VectorXd, Eigen::VectorXd, Eigen::VectorXd);
+    Eigen::MatrixXd getR03(Eigen::VectorXd);
+    void forwardKinematicsSolver(Eigen::VectorXd);
+    void inverseKinematicsSolver(Eigen::MatrixXd);
+    Eigen::MatrixXd pathGen(int path_mode, int path_steps);
+    Eigen::VectorXd timeProfileMaker(double travel_time, int steps, double angle=60);
+    Eigen::MatrixXd jointTrajectoryGen(Eigen::MatrixXd configurationPath, int path_mode, double travel_time);
     void publishTrajectory();
-    bool moveRobot();
     
     // Utility functions
     
     // Callback functions
-    void updateJointStates(sensor_msgs::JointState&);
-    void irb120MoveCallback()
+    void irb120MoveCallback(const rise_assembler_control::IRB120_move &msg);
+    void updateJointStatesCallback(const sensor_msgs::JointState&);
 };
 
 
@@ -78,38 +77,30 @@ class IRB120_Controller
 // CLASS MEMBER DEFINITION
 ////////////////////////////////////////////////////////////////////////////////
 
-IRB120_Controller::IRB120_Controller(ros::NodeHandle n)
+IRB120_Controller::IRB120_Controller(ros::NodeHandle handle)
 {
-    ////////////////////////////////////////////////////////////////////////////////
-    // Initialize parameters and input robot dimensions
-    ////////////////////////////////////////////////////////////////////////////////
-    
     // Static parameters
-    d = VectorXd(6); d << 290, 0, 0, 302, 0, 72;
-    a = VectorXd(6); a << 0, 270, 70, 0, 0, 0;
-    alpha = VectorXd(6); alpha << 90, 0, 90, -90, 90, 0;
+    n = handle;
+    d = Eigen::VectorXd(6); d << 290, 0, 0, 302, 0, 72;
+    a = Eigen::VectorXd(6); a << 0, 270, 70, 0, 0, 0;
+    alpha = Eigen::VectorXd(6); alpha << 90, 0, 90, -90, 90, 0;
     alpha *= (M_PI/180);        // Convert from degrees to radians
     
     // Dynamic parameters
-    theta = VectorXd(6);
-    theta_target = VectorXd(6);
-    P = VectorXd(6;)
-    P_endeffector = VectorXd(6);
-    R = MatrixXd(3, 3);
-    R_joint = MatrixXd(3, 3);
-    T = MatrixXd(4, 4);
-    T_joint = MatrixXd(4, 4);
-    T_endeffector = MatrixXd(4, 4);
+    theta = Eigen::VectorXd(6);
+    theta_target = Eigen::VectorXd(6);
+    P = Eigen::VectorXd(6);
+    P_endeffector = Eigen::VectorXd(6);
+    R = Eigen::MatrixXd(3, 3);
+    R_joint = Eigen::MatrixXd(3, 3);
+    T = Eigen::MatrixXd(4, 4);
+    T_joint = Eigen::MatrixXd(4, 4);
+    T_endeffector = Eigen::MatrixXd(4, 4);
 
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // Initialize ROS communications
-    ////////////////////////////////////////////////////////////////////////////////
-    
     // ROS publishers, messages
     joint_trajectory_publisher = n.advertise<trajectory_msgs::JointTrajectory>("/joint_path_command", 1000);
-    move_robot_service = n.advertiseService("/irb120_move", irb120MoveCallback);
-    joint_states_subscriber = n.subscribe("/joint_states", 1000, updateJointStates);
+    irb120_move_subscriber = n.subscribe("/assembler_move/irb120/command", 100, &IRB120_Controller::irb120MoveCallback, this);
+    joint_states_subscriber = n.subscribe("/joint_states", 100, &IRB120_Controller::updateJointStatesCallback, this);
     message.header.stamp.sec = 0; message.header.stamp.nsec = 0; message.header.frame_id = "/base_frame";
     message.joint_names.resize(6);
     message.joint_names[0] = "joint_1"; message.joint_names[1] = "joint_2";
@@ -118,9 +109,9 @@ IRB120_Controller::IRB120_Controller(ros::NodeHandle n)
 }
 
 // Get homogeneous transformation for single joint
-MatrixXd IRB120_Controller::getTransMatrix(double theta, double d_, double a_, double alpha_)
+Eigen::MatrixXd IRB120_Controller::getTransMatrix(double theta, double d_, double a_, double alpha_)
 {
-    MatrixXd T01(4, 4);
+    Eigen::MatrixXd T01(4, 4);
     T01 <<  cos(theta),     -sin(theta) * cos(alpha_),  sin(theta) * sin(alpha_),   a_ * cos(theta),
             sin(theta),     cos(theta) * cos(alpha_),   -cos(theta) * sin(alpha_),  a_ * sin(theta),
             0,              sin(alpha_),                cos(alpha_),                d_,
@@ -128,32 +119,27 @@ MatrixXd IRB120_Controller::getTransMatrix(double theta, double d_, double a_, d
     return T01;
 }
 
-void IRB120_Controller::irb120MoveCallback()
-{
-
-}
-
 // Get homogeneous transformation matrix for end effector
-MatrixXd IRB120_Controller::getHomoTransMatrix(MatrixXd theta, VectorXd d, VectorXd a, VectorXd alpha)
+Eigen::MatrixXd IRB120_Controller::getHomoTransMatrix(Eigen::MatrixXd theta, Eigen::VectorXd d, Eigen::VectorXd a, Eigen::VectorXd alpha)
 {
-    MatrixXd T01 = getTransMatrix(theta(0), d(0), a(0), alpha(0));
-    MatrixXd T12 = getTransMatrix(theta(1), d(1), a(1), alpha(1));
-    MatrixXd T23 = getTransMatrix(theta(2), d(2), a(2), alpha(2));
-    MatrixXd T34 = getTransMatrix(theta(3), d(3), a(3), alpha(3));
-    MatrixXd T45 = getTransMatrix(theta(4), d(4), a(4), alpha(4));
-    MatrixXd T56 = getTransMatrix(theta(5), d(5), a(5), alpha(5));
-    MatrixXd T06 = T01 * T12 * T23 * T34 * T45 * T56;
+    Eigen::MatrixXd T01 = getTransMatrix(theta(0), d(0), a(0), alpha(0));
+    Eigen::MatrixXd T12 = getTransMatrix(theta(1), d(1), a(1), alpha(1));
+    Eigen::MatrixXd T23 = getTransMatrix(theta(2), d(2), a(2), alpha(2));
+    Eigen::MatrixXd T34 = getTransMatrix(theta(3), d(3), a(3), alpha(3));
+    Eigen::MatrixXd T45 = getTransMatrix(theta(4), d(4), a(4), alpha(4));
+    Eigen::MatrixXd T56 = getTransMatrix(theta(5), d(5), a(5), alpha(5));
+    Eigen::MatrixXd T06 = T01 * T12 * T23 * T34 * T45 * T56;
     
     return T06;
 }
 
-MatrixXd IRB120_Controller::getR03(VectorXd theta_)
+Eigen::MatrixXd IRB120_Controller::getR03(Eigen::VectorXd theta_)
 {
-    MatrixXd R03(3, 3);
-    MatrixXd T03;
-    MatrixXd T01;
-    MatrixXd T12;
-    MatrixXd T23;
+    Eigen::MatrixXd R03(3, 3);
+    Eigen::MatrixXd T03;
+    Eigen::MatrixXd T01;
+    Eigen::MatrixXd T12;
+    Eigen::MatrixXd T23;
 
     T01 = getTransMatrix(theta_(0), d(0), a(0), alpha(0));
     T12 = getTransMatrix(theta_(1), d(1), a(1), alpha(1));
@@ -166,7 +152,7 @@ MatrixXd IRB120_Controller::getR03(VectorXd theta_)
 }
 
 // Forward kinematics solver
-void IRB120_Controller::forwardKinematicsSolver(VectorXd theta_)
+void IRB120_Controller::forwardKinematicsSolver(Eigen::VectorXd theta_)
 {
     theta = theta_;
     theta(0) = theta(0) * (M_PI / 180);
@@ -174,21 +160,21 @@ void IRB120_Controller::forwardKinematicsSolver(VectorXd theta_)
     theta(2) = theta(2) * (M_PI / 180);
     theta(3) = theta(3) * (M_PI / 180);
     theta(4) = theta(4) * (M_PI / 180);
-    theta(5) = theta(5) * (PI / 180);
+    theta(5) = theta(5) * (M_PI / 180);
 }
 
 // Inverse kinematics solver
-void IRB120_Controller::inverseKinematicsSolver(MatrixXd H)
+void IRB120_Controller::inverseKinematicsSolver(Eigen::MatrixXd H)
 {  
     int i, j, index;
-    MatrixXd Pos(3, 1);
-    MatrixXd Rot(3, 3);
-    MatrixXd k(3, 1);
-    MatrixXd Pos1(3, 1);
-    MatrixXd JointAngles(1, 6);
-    MatrixXd R03(3, 3);
-    MatrixXd R36(3, 3);
-    MatrixXd E_Pos(3, 1);
+    Eigen::MatrixXd Pos(3, 1);
+    Eigen::MatrixXd Rot(3, 3);
+    Eigen::MatrixXd k(3, 1);
+    Eigen::MatrixXd Pos1(3, 1);
+    Eigen::MatrixXd JointAngles(1, 6);
+    Eigen::MatrixXd R03(3, 3);
+    Eigen::MatrixXd R36(3, 3);
+    Eigen::MatrixXd E_Pos(3, 1);
     double x, y, z, R, alpha, beta, theta1, theta2, theta3, theta4, theta5, theta6, C2, S2, temp;
     for (i = 0; i <= 2; i++)
     {
@@ -201,11 +187,11 @@ void IRB120_Controller::inverseKinematicsSolver(MatrixXd H)
             Rot(i, j) = H(i, j);
     }
 
-    MatrixXd b(3, 1);
+    Eigen::MatrixXd b(3, 1);
     b(0, 0) = 0;
     b(1, 0) = 1;
     b(2, 0) = 1;
-    MatrixXd end(3, 1);
+    Eigen::MatrixXd end(3, 1);
     // E_Pos = Rot*b;
     Pos(0, 0) = Pos(0, 0);
     Pos(1, 0) = Pos(1, 0) - (32.5);
@@ -228,7 +214,7 @@ void IRB120_Controller::inverseKinematicsSolver(MatrixXd H)
     temp = atan2(z - 290 - 270 * cos(theta2), R + 270 * sin(theta2));
     theta3 = temp - theta2 - alpha;
 
-    VectorXd t(3);
+    Eigen::VectorXd t(3);
     t(0) = theta1;
     t(1) = theta2 + (90 * M_PI / 180.0);
     t(2) = theta3;
@@ -250,32 +236,97 @@ void IRB120_Controller::inverseKinematicsSolver(MatrixXd H)
 }
 
 // End-effector path generator
-MatrixXd IRB120_Controller::pathGen()
+Eigen::MatrixXd IRB120_Controller::pathGen(int path_mode, int path_steps)
 {
-    VectorXd 
+    Eigen::MatrixXd configurationDiff = configuration_target - configuration;
+    
+    if (path_mode == PATH_LINEAR)
+    {
+        // Make path through linear interpolation
+        configurationPath = Eigen::MatrixXd(path_steps+1, 6);
+        for (int idx = 0; idx <= path_steps; idx++)
+            for (int joint = 0; joint < 6; joint++)
+                configurationPath(idx, joint) = configurationDiff(joint) / path_steps * idx;
+    }
+    else
+    {
+        // Make path with only starting and ending point
+        configurationPath = Eigen::MatrixXd(1, 6);
+        for (int joint = 0; joint < 6; joint++)
+            configurationPath(0, joint) = configuration_target(joint);
+    }
+    
+    return configurationPath;
 }
 
-// Convert end-effector path to joint profile:
-// start and stop at same time
-MatrixXd IRB120_Controller::path2Profile()
+Eigen::VectorXd IRB120_Controller::timeProfileMaker(double travel_time, int steps, double angle)
 {
+    // Initialization
+    double theta = angle * M_PI / 180;
+    double L = travel_time;
+    timesteps = Eigen::VectorXd(steps + 1);
+    
+    // Calculate parameters
+    double radius = (sin(theta) - cos(theta)) / (1 - cos(theta)) / 2 * L;
+    double departure = radius * (1 - cos(theta));
+    double arrival = L - radius * (1 - cos(theta));
 
+    // Make profile
+    double x = 0;
+    for (int idx = 0; idx < steps + 1; idx++)
+    {
+        x = travel_time / steps * idx;
+        if (x < departure)
+            timesteps(idx) = sqrt(2 * radius * x - pow(x,2));
+        else if (x < arrival)
+            timesteps(idx) = ((x - radius) * cos(theta) + radius) / sin(theta);
+        else
+            timesteps(idx) = L - sqrt(2 * radius * (L - x) - pow(x-L,2));       
+    }
+
+    return timesteps;
+}
+
+Eigen::MatrixXd IRB120_Controller::jointTrajectoryGen(Eigen::MatrixXd configurationPath, int path_mode, double travel_time)
+{
+    Eigen::VectorXd thetaDiff = (theta_target - theta).cwiseAbs();
+    double maxOffset = thetaDiff.maxCoeff();
+    int pathPoints = configurationPath.rows();
 }
 
 void IRB120_Controller::publishTrajectory()
 {
-    // Create ROS messages
+    // Read step count info and resize message length
+    int steps = timesteps.size() - 1;
+    message.points.resize(steps + 1);
 
-    // Publish each message
+    // Put each point into message structure
+    for (int idx = 0; idx < steps + 1; idx++)
+    {
+        message.points[idx].positions.resize(6);
+        message.points[idx].positions[0] = jointTrajectory(idx, 0);
+        message.points[idx].positions[1] = jointTrajectory(idx, 1);
+        message.points[idx].positions[2] = jointTrajectory(idx, 2);
+        message.points[idx].positions[3] = jointTrajectory(idx, 3);
+        message.points[idx].positions[4] = jointTrajectory(idx, 4);
+        message.points[idx].positions[5] = jointTrajectory(idx, 5);
+        message.points[idx].time_from_start = ros::Duration(timesteps(idx));
+    }
+
+    // Publish message and wait until movement finishes
+    double travelTime = timesteps.maxCoeff();
     joint_trajectory_publisher.publish(message);
+    ros::Duration(travelTime).sleep();
 }
 
-bool IRB120_Controller::moveRobot()
+void IRB120_Controller::irb120MoveCallback(const rise_assembler_control::IRB120_move &msg)
 {
-    
+    ROS_INFO("Move callback called.");
+
+    // return true;
 }
 
-void IRB120_Controller::updateJointStates(sensor_msgs::JointState& message)
+void IRB120_Controller::updateJointStatesCallback(const sensor_msgs::JointState& message)
 {
     theta(0) = message.position[0];
     theta(1) = message.position[1];

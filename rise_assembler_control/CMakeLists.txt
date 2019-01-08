@@ -12,7 +12,8 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs std_srvs geometry_msgs r
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-# find_package(Eigen REQUIRED COMPONENTS Dense)
+# find_package (cmake_modules REQUIRED)
+# find_package(Eigen REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -45,18 +46,18 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs std_srvs geometry_msgs r
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  IRB120_move.msg
+  gripper_move.msg
+  # Message2.msg
+)
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  IRB120_move.srv
+# add_service_files(
+#   FILES
 #   Service2.srv
-)
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -130,7 +131,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(test_cpp_node src/test_cpp.cpp)
-add_executable(assembler_control_node src/assembler_control.cpp)
+# add_executable(assembler_control_node src/assembler_control.cpp)
 add_executable(irb120_control_node src/irb120_control.cpp)
 add_executable(gripper_control_node src/gripper_control.cpp)
 
@@ -146,7 +147,7 @@ add_executable(gripper_control_node src/gripper_control.cpp)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(test_cpp_node ${catkin_LIBRARIES})
-target_link_libraries(assembler_control_node ${catkin_LIBRARIES})
+# target_link_libraries(assembler_control_node ${catkin_LIBRARIES})
 target_link_libraries(irb120_control_node ${catkin_LIBRARIES})
 target_link_libraries(gripper_control_node ${catkin_LIBRARIES})
 

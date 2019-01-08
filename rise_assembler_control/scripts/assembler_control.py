@@ -1,12 +1,21 @@
 import rospy, Queue
-from rise_assembler_control.srv import *
+from rise_assembler_control.msg import *
 
 class RISE_Assembler_Controller:
     def __init__(self, program_path):
+        # Initialize controller instance
         self.program_io = open(program_path)
         self.program_io.seek(0)
         self.task_queue = Queue.Queue()
-        pass
+
+        # Create publishers that deliver movement commands
+        self.irb120_control_publisher = rospy.Publisher("/assembler_move/irb120/command", IRB120_move, 100)
+        self.gripper_control_publisher = rospy.Publisher("/assembler_move/gripper/command", gripper_move, 100)
+
+        # Create and initialize messages
+        self.irb120_msg = IRB120_move()
+        self.gripper_msg = gripper_move()
+        
     
     # Task parser: single step
     def parse_task(self):
@@ -25,22 +34,28 @@ class RISE_Assembler_Controller:
             if line_buf[:4] == "OPEN":
                 # No additional argument is to be given.
                 # Call function for command OPEN.
-                self.task_queue.put(["OPEN", None])
+                self.task_queue.put(["OPEN"])
+                rospy.loginfo("Command [ OPEN ] pushed to task queue.")
             elif line_buf[:4] == "GRIP":
                 # Given argument is the force by gripper.
                 # Call function for command GRIP.
-                self.task_queue.put(["GRIP", None])
+                self.task_queue.put(["GRIP"])
+                rospy.loginfo("Command [ GRIP ] pushed to task queue.")
             elif line_buf[:4] == "WAIT":
                 # Given arugment is the time to sleep.
                 # Parse the argument and wait for that time.
                 line_buf = line_buf[line_buf.index('(')+1:line_buf.index(')')]
                 self.task_queue.put(["WAIT", float(line_buf)])
+                rospy.loginfo("Command [ WAIT ] pushed to task queue.")
             elif line_buf[:4] == "MOVE":
                 # Given argument is the desired configuration of the robot.
                 # Call the service that would move the robot.
-                line_buf = line_buf[line_buf.index('(')+1:line_buf.index(')')]
-                configuration = [float(x) for x in line_buf.replace(' ','').split(',')]
-                self.task_queue.put(["MOVE", configuration])
+                config_buf = line_buf[line_buf.index('[')+1:line_buf.index(']')]
+                configuration = [float(x) for x in config.replace(' ','').split(',')]
+                second_comma_pos = line_buf.index(',', line_buf.index(']')+1)
+                travel_time = float(line_buf[second_comma_pos+1:line_buf.index(';')].strip())
+                self.task_queue.put(["MOVE", configuration, travel_time])
+                rospy.loginfo("Command [ MOVE ] pushed to task queue.")
     
     def execute_all(self):
         while !self.task_queue.empty():
@@ -53,14 +68,7 @@ class RISE_Assembler_Controller:
                 pass
             elif task[0] == "MOVE":
                 # Call move service from IRB120_Controller node
-                configuration = task[1]
-                rospy.wait_for_service("/irb120_move")
-                try:
-                    irb120_move = rospy.ServiceProxy("/irb120_move", IRB120_move)
-                    irb120_move(configuration)
-                    rospy.loginfo("Movement to ", configuration, "complete.")
-                except rospy.ServiceException, e:
-                    rospy.logerr("Service call failed: %s" % e)
-                pass
+                self.message
+                self.irb120_control_publisher()
             elif task[0] == "WAIT":
                 rospy.sleep(task[1])
