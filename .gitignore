@@ -116,6 +116,23 @@ CATKIN_IGNORE
 
 *.ipynb
 
-rise_assembler_control/include/Eigen/*
+### LaTeX ###
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Intermediate documents:
+*.dvi
+*.xdv
 
 # End of https://www.gitignore.io/api/ros,c++,linux,visualstudiocode
