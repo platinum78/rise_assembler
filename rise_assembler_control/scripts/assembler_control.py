@@ -1,9 +1,14 @@
-import rospy, Queue
+#!/usr/bin/python2
+
+import rospy, Queue, sys
 from rise_assembler_control.msg import *
 
 class RISE_Assembler_Controller:
-    def __init__(self, program_path):
+    def __init__(self, node_name, program_path):
+        rospy.loginfo("Assembler controller initialized.")
+
         # Initialize controller instance
+        rospy.init_node(node_name)
         self.program_io = open(program_path)
         self.program_io.seek(0)
         self.task_queue = Queue.Queue()
@@ -51,14 +56,14 @@ class RISE_Assembler_Controller:
                 # Given argument is the desired configuration of the robot.
                 # Call the service that would move the robot.
                 config_buf = line_buf[line_buf.index('[')+1:line_buf.index(']')]
-                configuration = [float(x) for x in config.replace(' ','').split(',')]
+                configuration = [float(x) for x in config_buf.replace(' ','').split(',')]
                 second_comma_pos = line_buf.index(',', line_buf.index(']')+1)
                 travel_time = float(line_buf[second_comma_pos+1:line_buf.index(';')].strip())
                 self.task_queue.put(["MOVE", configuration, travel_time])
                 rospy.loginfo("Command [ MOVE ] pushed to task queue.")
     
     def execute_all(self):
-        while !self.task_queue.empty():
+        while not self.task_queue.empty():
             task = self.task_queue.get_nowait()
             if task[0] == "OPEN":
                 # Deliver open command to gripper control node
@@ -68,7 +73,19 @@ class RISE_Assembler_Controller:
                 pass
             elif task[0] == "MOVE":
                 # Call move service from IRB120_Controller node
-                self.message
-                self.irb120_control_publisher()
+                self.irb120_msg.destination = task[1]
+                self.irb120_msg.travel_time = task[2]
+                self.irb120_msg.path_mode = IRB120_move.PATH_LINEAR
+                self.irb120_control_publisher.publish(self.irb120_msg)
             elif task[0] == "WAIT":
                 rospy.sleep(task[1])
+
+if __name__ == "__main__":
+    try:
+        rospy.loginfo("assembler_control.py called.")
+        assembler = RISE_Assembler_Controller("assembler_control_node", sys.argv[1])
+        assembler.parse_task()
+        assembler.execute_all()
+    except rospy.ROSInterruptException:
+        pass
+        

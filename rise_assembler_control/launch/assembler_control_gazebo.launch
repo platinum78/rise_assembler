@@ -1,4 +1,0 @@
-<launch>
-    <include file="$(find abb_irb120_gazebo)/launch/irb120_gazebo.launch" />
-    <node pkg="rise_assembler_control" type="test.py" name="test" />
-</launch>

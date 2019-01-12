@@ -1,3 +1,3 @@
 float64 travel_time
 float64 destination
-string path_mode
+uint8 path_mode

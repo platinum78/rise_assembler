@@ -7,7 +7,7 @@
     <!-- ros_control plugin -->
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/</robotNamespace>
+            <robotNamespace>/irb120</robotNamespace>
             <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
         </plugin>
     </gazebo>
@@ -17,16 +17,16 @@
     <link name="world"/>
     <joint name="fixed" type="fixed">
         <parent link="world"/>
-        <child link="${irb120_ns}base_link"/>
+        <child link="base_link"/>
         <origin rpy="0 0 0" xyz="0 0 0.76"/>
     </joint>
 
-    <xacro:property name="irb120_ns" value="" />
-    <xacro:property name="gripper_ns" value="" />
+
+    <xacro:property name="prefix" value="" />
 
     <!-- Description of IRB120 robot -->
     <!-- Description of base_link -->
-    <link name="${irb120_ns}base_link">
+    <link name="${prefix}base_link">
         <inertial>
             <mass value="6.215"/>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -52,17 +52,17 @@
     </link>
 
     <!-- Joint - 1 -->
-    <joint name="${irb120_ns}joint_1" type="revolute">
+    <joint name="${prefix}joint_1" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0"/>
-        <parent link="${irb120_ns}base_link"/>
-        <child link="${irb120_ns}link_1"/>
+        <parent link="${prefix}base_link"/>
+        <child link="${prefix}link_1"/>
         <limit effort="20" lower="-2.87979" upper="2.87979" velocity="4.36332"/>
         <axis xyz="0 0 1"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 
     <!-- Description of link - 1 -->
-    <link name="${irb120_ns}link_1">
+    <link name="${prefix}link_1">
 
         <inertial>
             <mass value="3.067" />
@@ -89,17 +89,17 @@
     </link>
 
     <!-- Joint - 2 -->
-    <joint name="${irb120_ns}joint_2" type="revolute">
+    <joint name="${prefix}joint_2" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.29"/>
-        <parent link="${irb120_ns}link_1"/>
-        <child link="${irb120_ns}link_2"/>
+        <parent link="${prefix}link_1"/>
+        <child link="${prefix}link_2"/>
         <limit effort="20" lower="-1.91986" upper="1.91986" velocity="4.36332"/>
         <axis xyz="0 -1 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 
     <!-- Description of link - 2 -->
-    <link name="${irb120_ns}link_2">
+    <link name="${prefix}link_2">
 
         <inertial>
             <mass value="3.909"/>
@@ -126,17 +126,17 @@
     </link>
 
     <!-- Joint - 3 -->
-    <joint name="${irb120_ns}joint_3" type="revolute">
+    <joint name="${prefix}joint_3" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.27"/>
-        <parent link="${irb120_ns}link_2"/>
-        <child link="${irb120_ns}link_3"/>
+        <parent link="${prefix}link_2"/>
+        <child link="${prefix}link_3"/>
         <limit effort="20" lower="-1.91986" upper="1.22173" velocity="4.36332"/>
         <axis xyz="0 -1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
     <!-- Description of link - 3 -->
-    <link name="${irb120_ns}link_3">
+    <link name="${prefix}link_3">
 
         <inertial>
             <mass value="2.944"/>
@@ -163,17 +163,17 @@
     </link>
 
     <!-- Joint - 4 -->
-    <joint name="${irb120_ns}joint_4" type="revolute">
+    <joint name="${prefix}joint_4" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.07"/>
-        <parent link="${irb120_ns}link_3"/>
-        <child link="${irb120_ns}link_4"/>
+        <parent link="${prefix}link_3"/>
+        <child link="${prefix}link_4"/>
         <limit effort="20" lower="-4" upper="4" velocity="5.58505"/>
         <axis xyz="1 0 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 
     <!--  Description of link - 4 -->
-    <link name="${irb120_ns}link_4">
+    <link name="${prefix}link_4">
 
         <inertial>
             <mass value="0.1328"/>
@@ -200,17 +200,17 @@
     </link>
 
     <!-- Joint - 5 -->
-    <joint name="${irb120_ns}joint_5" type="revolute">
+    <joint name="${prefix}joint_5" type="revolute">
         <origin rpy="0 0 0" xyz="0.302 0 0"/>
-        <parent link="${irb120_ns}link_4"/>
-        <child link="${irb120_ns}link_5"/>
+        <parent link="${prefix}link_4"/>
+        <child link="${prefix}link_5"/>
         <limit effort="20" lower="-2.094395" upper="2.094395" velocity="5.58505"/>
         <axis xyz="0 -1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
     <!-- Description of link - 5-->
-    <link name="${irb120_ns}link_5">
+    <link name="${prefix}link_5">
 
         <inertial>
             <mass value="0.546"/>
@@ -235,19 +235,19 @@
         </collision>
 
     </link>
-
+    
     <!-- Joint - 6 -->
-    <joint name="${irb120_ns}joint_6" type="revolute">
+    <joint name="${prefix}joint_6" type="revolute">
         <origin rpy="0 0 0" xyz="0.072 0 0"/>
-        <parent link="${irb120_ns}link_5"/>
-        <child link="${irb120_ns}link_6"/>
+        <parent link="${prefix}link_5"/>
+        <child link="${prefix}link_6"/>
         <limit effort="20" lower="-4" upper="4" velocity="7.33038"/>
         <axis xyz="1 0 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
     <!-- Description of link - 6 -->
-    <link name="${irb120_ns}link_6">
+    <link name="${prefix}link_6">
 
         <inertial>
             <mass value="0.137"/>
@@ -274,68 +274,78 @@
     </link>
 
     <!-- Description of the gripper -->
-    <xacro:include filename="$(find rise_assembler_model)/urdf/robotiq_arg2f_140_model.xacro" />
-
+    <xacro:include filename="$(find rise_assembler_model)/urdf/robotiq_arg2f_140_model.xacro"/>
+    
     <!-- bolting between link 6 and gripper -->
-    <joint name="${irb120_ns}gripper_bolting" type="fixed">
-        <parent link="${irb120_ns}link_6"/>
-        <child link="${gripper_ns}robotiq_arg2f_base_link"/>
+    <joint name="${prefix}gripper_bolting" type="fixed">
+        <parent link="${prefix}link_6"/>
+        <child link="${prefix}robotiq_arg2f_base_link"/>
         <origin rpy="0 ${pi / 2} 0" xyz="0 0 0"/>
     </joint>
 
     <!-- Robot kinetics parts -->
-    <!-- transmission list -->
-    <transmission name="${irb120_ns}tran1">
+    <transmission name="${prefix}tran1">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_1">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor1">
+        <actuator name="motor1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="${irb120_ns}tran2">
+
+    <transmission name="${prefix}tran2">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_2">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_2">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor2">
+        <actuator name="motor2">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="${irb120_ns}tran3">
+
+    <transmission name="${prefix}tran3">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_3">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_3">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor3">
+        <actuator name="motor3">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="${irb120_ns}tran4">
+
+    <transmission name="${prefix}tran4">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_4">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_4">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor4">
+        <actuator name="motor4">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="${irb120_ns}tran5">
+
+    <transmission name="${prefix}tran5">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_5">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_5">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor5">
+        <actuator name="motor5">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="${irb120_ns}tran6">
+
+    <transmission name="${prefix}tran6">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="${irb120_ns}joint_6">
-            <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <joint name="${prefix}joint_6">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="${irb120_ns}motor6">
+        <actuator name="motor6">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
@@ -352,37 +362,37 @@
     </transmission> -->
 
     <!-- Gazebo-specific link properties -->
-    <gazebo reference="${irb120_ns}base_link">
+    <gazebo reference="${prefix}base_link">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_1">
+    <gazebo reference="${prefix}link_1">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_2">
+    <gazebo reference="${prefix}link_2">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_3">
+    <gazebo reference="${prefix}link_3">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_4">
+    <gazebo reference="${prefix}link_4">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_5">
+    <gazebo reference="${prefix}link_5">
         <material>Gazebo/Orange</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-    <gazebo reference="${irb120_ns}link_6">
+    <gazebo reference="${prefix}link_6">
         <material>Gazebo/Black</material>
         <turnGravityOff>true</turnGravityOff>
     </gazebo>

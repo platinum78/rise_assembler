@@ -5,11 +5,12 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float64.h>
 #include <geometry_msgs/Point.h>
+#include <geometry_msgs/Pose.h>
 #include <sensor_msgs/JointState.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 #include <Eigen/Dense>
-#include "assembler_params.h"
+#include "./assembler_params.h"
 #include "rise_assembler_control/IRB120_move.h"
 // #include "rise_assembler_control/IRB120_move.h"
 #define RAD2DEG(X) (X*180/M_PI)
@@ -60,12 +61,26 @@ class IRB120_Controller
     Eigen::MatrixXd getR03(Eigen::VectorXd);
     void forwardKinematicsSolver(Eigen::VectorXd);
     void inverseKinematicsSolver(Eigen::MatrixXd);
-    Eigen::MatrixXd pathGen(int path_mode, int path_steps);
+    Eigen::MatrixXd pathGen(rise_assembler_control::IRB120_move &msg, int path_steps);
     Eigen::VectorXd timeProfileMaker(double travel_time, int steps, double angle=60);
     Eigen::MatrixXd jointTrajectoryGen(Eigen::MatrixXd configurationPath, int path_mode, double travel_time);
     void publishTrajectory();
     
     // Utility functions
+    void startControlLoop();
+    void printTheta();
+    void copySinglePoint()
+    {
+        message.points.resize(1);
+        message.points[0].positions.resize(6);
+        message.points[0].time_from_start.sec = 2;
+        message.points[0].time_from_start.nsec = 0;
+        for (int idx = 0; idx < 6; idx++)
+            message.points[0].positions[idx] = theta_target(idx);
+        ros::Duration(0.5).sleep();
+        joint_trajectory_publisher.publish(message);
+        ros::Duration(2.0).sleep();
+    }
     
     // Callback functions
     void irb120MoveCallback(const rise_assembler_control::IRB120_move &msg);
@@ -236,18 +251,21 @@ void IRB120_Controller::inverseKinematicsSolver(Eigen::MatrixXd H)
 }
 
 // End-effector path generator
-Eigen::MatrixXd IRB120_Controller::pathGen(int path_mode, int path_steps)
+Eigen::MatrixXd IRB120_Controller::pathGen(rise_assembler_control::IRB120_move &msg, int path_steps)
 {
     Eigen::MatrixXd configurationDiff = configuration_target - configuration;
     
-    if (path_mode == PATH_LINEAR)
+    // If PATH_LINEAR mode, make linear path by calculating linear interpolation.
+    if (msg.path_mode == PATH_LINEAR)
     {
+        ROS_INFO("Linear path generation requested.");
         // Make path through linear interpolation
         configurationPath = Eigen::MatrixXd(path_steps+1, 6);
         for (int idx = 0; idx <= path_steps; idx++)
             for (int joint = 0; joint < 6; joint++)
                 configurationPath(idx, joint) = configurationDiff(joint) / path_steps * idx;
     }
+    // If PATH_UNIFORM mode, only the destination is needed.
     else
     {
         // Make path with only starting and ending point
@@ -289,9 +307,13 @@ Eigen::VectorXd IRB120_Controller::timeProfileMaker(double travel_time, int step
 
 Eigen::MatrixXd IRB120_Controller::jointTrajectoryGen(Eigen::MatrixXd configurationPath, int path_mode, double travel_time)
 {
-    Eigen::VectorXd thetaDiff = (theta_target - theta).cwiseAbs();
-    double maxOffset = thetaDiff.maxCoeff();
-    int pathPoints = configurationPath.rows();
+    // Verify validity of joint angle profile
+    if (path_mode == PATH_UNIFORM)
+        if (configurationPath.rows() != 1)
+            ROS_ERROR("Uniform path requested, but joint angle profile has more than one timestep!");
+    
+    
+    
 }
 
 void IRB120_Controller::publishTrajectory()
@@ -317,6 +339,18 @@ void IRB120_Controller::publishTrajectory()
     double travelTime = timesteps.maxCoeff();
     joint_trajectory_publisher.publish(message);
     ros::Duration(travelTime).sleep();
+}
+
+void IRB120_Controller::startControlLoop()
+{
+    ros::spin();
+}
+
+void IRB120_Controller::printTheta()
+{
+    ROS_INFO("%f, %f, %f, %f, %f, %f", theta_target(0), theta_target(1),
+                                        theta_target(2), theta_target(3),
+                                        theta_target(4), theta_target(5));
 }
 
 void IRB120_Controller::irb120MoveCallback(const rise_assembler_control::IRB120_move &msg)

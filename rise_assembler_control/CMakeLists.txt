@@ -2,18 +2,29 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rise_assembler_control)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs std_srvs geometry_msgs rospy trajectory_msgs message_generation)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  std_srvs
+  geometry_msgs
+  rospy
+  trajectory_msgs
+  message_generation
+  moveit_ros_planning_interface
+  moveit_visual_tools
+  rviz_visual_tools
+   )
 
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-# find_package (cmake_modules REQUIRED)
-# find_package(Eigen REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
+find_package (cmake_modules REQUIRED)
+find_package(Eigen REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -133,6 +144,7 @@ include_directories(
 # add_executable(test_cpp_node src/test_cpp.cpp)
 # add_executable(assembler_control_node src/assembler_control.cpp)
 add_executable(irb120_control_node src/irb120_control.cpp)
+add_executable(moveit_test_node src/moveit_test.cpp)
 add_executable(gripper_control_node src/gripper_control.cpp)
 
 ## Rename C++ executable without prefix
@@ -148,7 +160,8 @@ add_executable(gripper_control_node src/gripper_control.cpp)
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(test_cpp_node ${catkin_LIBRARIES})
 # target_link_libraries(assembler_control_node ${catkin_LIBRARIES})
-target_link_libraries(irb120_control_node ${catkin_LIBRARIES})
+target_link_libraries(irb120_control_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(moveit_test_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 target_link_libraries(gripper_control_node ${catkin_LIBRARIES})
 
 #############
