@@ -1,0 +1,5 @@
+<launch>
+
+    <rosparam command="load" file="$(find rise_assembler_moveit)/config/controllers_list.yaml" />
+
+</launch>

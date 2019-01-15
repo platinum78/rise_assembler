@@ -20,7 +20,7 @@
     <joint name="fixed" type="fixed">
         <parent link="world"/>
         <child link="${irb120_ns}base_link"/>
-        <origin rpy="0 0 0" xyz="0 0 0.76"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
     </joint>
 
     <!-- Description of IRB120 robot -->
@@ -93,7 +93,7 @@
         <parent link="${irb120_ns}link_1"/>
         <child link="${irb120_ns}link_2"/>
         <limit effort="20" lower="-1.91986" upper="1.91986" velocity="4.36332"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 
@@ -130,7 +130,7 @@
         <parent link="${irb120_ns}link_2"/>
         <child link="${irb120_ns}link_3"/>
         <limit effort="20" lower="-1.91986" upper="1.22173" velocity="4.36332"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
@@ -204,7 +204,7 @@
         <parent link="${irb120_ns}link_4"/>
         <child link="${irb120_ns}link_5"/>
         <limit effort="20" lower="-2.094395" upper="2.094395" velocity="5.58505"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 

@@ -1,0 +1,8 @@
+# Parameters
+string mode
+---
+# Result Messages
+bool success
+---
+# Feedback Messages
+float32 percent_complete
