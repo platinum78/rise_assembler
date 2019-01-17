@@ -167,7 +167,7 @@
         <parent link="${irb120_ns}link_3"/>
         <child link="${irb120_ns}link_4"/>
         <limit effort="20" lower="-2.792526" upper="2.792526" velocity="5.58505"/>
-        <axis xyz="-1 0 0"/>
+        <axis xyz="1 0 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 

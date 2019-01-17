@@ -1,25 +1,43 @@
 #!/usr/bin/python2
-
 import sys, copy, rospy, moveit_commander, moveit_msgs.msg, geometry_msgs.msg, time
 from math import pi, sqrt
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 from geometry_msgs.msg import Quaternion
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 import numpy as np
+
+import roslib; roslib.load_manifest('robotiq_2f_gripper_control')
+import rospy
+from robotiq_2f_gripper_control.msg import _Robotiq2FGripper_robot_output  as outputMsg
 
 class rise_assembler_controller:
     def __init__(self, assembler, abb_irb120):
+        # Initialize MoveIt! for ABB IRB 120
         self.assembler = assembler
         self.abb_irb120 = abb_irb120
-        self.joint_angle_init_pose = [0, 0, 0, 0, pi/2, 0]
+        self.joint_angle_init_pose = [-pi/2, 0, 0, 0, pi/2, 0]
         self.joint_angle_goal_prev = [0, 0, 0, 0, pi/2, 0]
         self.wpose = geometry_msgs.msg.Pose()
         self.was_previous_command_execute = False
         self.abb_irb120.set_goal_joint_tolerance(0.01)
+        self.gripper_open_pos = 150
+        self.gripper_grip_pos = 255
         # self.abb_irb120.set_goal_position_tolerance(0.01)
         # self.abb_irb120.set_goal_orientation_tolerance(0.01)
 
+        # Initialize ROS publisher units for gripper manipulation.
+        self.gripper_pub = rospy.Publisher('Robotiq2FGripperRobotOutput', \
+                            outputMsg.Robotiq2FGripper_robot_output)
+        self.gripper_command = outputMsg.Robotiq2FGripper_robot_output();
+        self.gripper_command.rACT = 1
+        self.gripper_command.rGTO = 1
+        self.gripper_command.rATR = 0
+        self.gripper_command.rPR = 255
+        self.gripper_command.rSP = 255
+        self.gripper_command.rFR = 255
+
+    # Shortcut Function: move to initial position
     def move_to_init_pos(self):
         # Move to non-singularity position
         # self.joint_angle_goal = copy.deepcopy(self.joint_angle_pos)
@@ -31,9 +49,10 @@ class rise_assembler_controller:
         self.abb_irb120.go(wait=True)
         rospy.loginfo("Moved to initial pose.")
         time.sleep(1.0)
-
+        
     
-    def move_to_pose(self, x, y, z, r, p, y_):
+    def move_to_pose(self, pose):
+        x, y, z, r, p, y_ = pose
         rospy.loginfo("move_to_pose() called.")
         self.abb_irb120.stop()
         self.abb_irb120.clear_pose_targets()
@@ -53,10 +72,11 @@ class rise_assembler_controller:
         self.abb_irb120.go(wait=True)
         time.sleep(0.5)
 
-    def move_by_cartesian_path(self, x, y, z, r, p, y_, path_resolution=0.01):
+    def move_by_cartesian_path(self, pose, path_resolution=0.01):
         # It is always good to clear your targets after planning with poses.
         # Note: there is no equivalent function for clear_joint_value_targets()
         # self.abb_irb120.clear_pose_targets()
+        x, y, z, r, p, y_ = pose
         self.abb_irb120.stop()
         self.abb_irb120.clear_pose_targets()
 
@@ -77,7 +97,7 @@ class rise_assembler_controller:
         self.abb_irb120.set_pose_target(self.wpose)
 
         rospy.loginfo("Computing path...")
-        (trajectory_plan, fraction) = abb_irb120.compute_cartesian_path(self.waypoints, path_resolution, 0.0)
+        (trajectory_plan, fraction) = self.abb_irb120.compute_cartesian_path(self.waypoints, path_resolution, 0.0)
         trajectory_plan.joint_trajectory.points.pop(0)
         
         rospy.loginfo("Moving on Cartesian path...")
@@ -96,35 +116,28 @@ class rise_assembler_controller:
     
     def move_to_test_pos(self):
         joint_angle_goal = [0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
-        abb_irb120.go(joint_angle_goal, wait=True)
+        self.abb_irb120.go(joint_angle_goal, wait=True)
     
+    def set_gripper_pos(self, pos):
+        self.gripper_command.rPR = int(pos)
+        self.gripper_pub.publish(self.gripper_command)
+        time.sleep(1.5)
+    
+    def gripper_open(self):
+        self.set_gripper_pos(self.gripper_open_pos)
+    
+    def gripper_grip(self):
+        self.set_gripper_pos(self.gripper_grip_pos)
+    
+    def rotate_joint(self, joint_idx, angle):
+        self.get_joint_angles()
+        joint_angle_goal = self.joint_angle_pos
+        joint_angle_goal[joint_idx-1] += angle
 
-if __name__ == "__main__":
+        abb_irb120.stop()
+        abb_irb120.set_joint_value_target(joint_angle_goal)
+        abb_irb120.go(wait=True)
+        rospy.loginfo("Joint %d rotated by %6f radians." % (joint_idx+1, angle))
     
-    moveit_commander.roscpp_initialize(sys.argv)
-    rospy.init_node("moveit_test_node")
-    assembler_cmd = moveit_commander.RobotCommander()
-    abb_irb120 = moveit_commander.MoveGroupCommander("abb_irb120")
-    assembler = rise_assembler_controller(assembler_cmd, abb_irb120)
-    # assembler.move_to_test_pos()
-    try:
-        base_height = 0.0
-        rospy.logwarn("Moving to initial position...")
-        assembler.move_to_init_pos()
-        rospy.logwarn("Moving to part position...")
-        assembler.move_to_pose(0, -0.5, 0.3 + base_height, 0, pi/2, -pi/2)
-        rospy.logwarn("Descending to pick part...")
-        assembler.move_by_cartesian_path(0, -0.5, 0.25 + base_height, 0, pi/2, -pi/2, path_resolution=0.005)
-        rospy.logwarn("Picked part up. Now ascending...")
-        assembler.move_by_cartesian_path(0, -0.5, 0.3 + base_height, 0, pi/2, -pi/2, path_resolution=0.005)
-        rospy.logwarn("Moving to desntination...")
-        assembler.move_to_pose(0.4, 0, 0.4 + base_height, 0, 0, 0)
-        rospy.logwarn("Arrived to destination. Pulling part into slot...")
-        assembler.move_by_cartesian_path(0.45, 0, 0.4 + base_height, 0, 0, 0, path_resolution=0.005)
-        rospy.logwarn("Pulled part into slot. Now withdrawing from workplace...")
-        assembler.move_by_cartesian_path(0.4, 0, 0.4 + base_height, 0, 0, 0, path_resolution=0.005)
-        rospy.logwarn("Mission complete. Now returning to initial pose...")
-        assembler.move_to_init_pos()
-        rospy.logwarn("Motion complete!")
-    except rospy.ROSInterruptException:
-        pass
+    def quaternion_to_rpy(self, quaternion):
+        print euler_from_quaternion(quaternion)
