@@ -16,7 +16,7 @@ class rise_assembler_controller:
         # Initialize MoveIt! for ABB IRB 120
         self.assembler = assembler
         self.abb_irb120 = abb_irb120
-        self.joint_angle_init_pose = [-pi/2, 0, 0, 0, pi/2, 0]
+        self.joint_angle_init_pose = [0, 0, 0, 0, pi/2, 0]
         self.joint_angle_goal_prev = [0, 0, 0, 0, pi/2, 0]
         self.wpose = geometry_msgs.msg.Pose()
         self.was_previous_command_execute = False
@@ -70,7 +70,6 @@ class rise_assembler_controller:
 
         self.abb_irb120.set_pose_target(self.wpose)
         self.abb_irb120.go(wait=True)
-        time.sleep(0.5)
 
     def move_by_cartesian_path(self, pose, path_resolution=0.01):
         # It is always good to clear your targets after planning with poses.
@@ -105,7 +104,6 @@ class rise_assembler_controller:
         rospy.loginfo("Subtly adjusting final position...")
         self.abb_irb120.go(wait=True)
         # rospy.logwarn("Movement finished!")
-        time.sleep(0.5)
     
     def get_joint_angles(self, log=True):
         self.joint_angle_pos = self.abb_irb120.get_current_joint_values()
@@ -116,6 +114,10 @@ class rise_assembler_controller:
     
     def move_to_test_pos(self):
         joint_angle_goal = [0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+        self.abb_irb120.go(joint_angle_goal, wait=True)
+    
+    def move_to_joint_pos(self, pos):
+        joint_angle_goal = pos
         self.abb_irb120.go(joint_angle_goal, wait=True)
     
     def set_gripper_pos(self, pos):

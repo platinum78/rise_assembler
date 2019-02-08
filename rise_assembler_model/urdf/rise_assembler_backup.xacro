@@ -20,7 +20,7 @@
     <joint name="fixed" type="fixed">
         <parent link="world"/>
         <child link="${irb120_ns}base_link"/>
-        <origin rpy="0 0 0" xyz="0 0 0.76"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
     </joint>
 
     <!-- Description of IRB120 robot -->
@@ -93,7 +93,7 @@
         <parent link="${irb120_ns}link_1"/>
         <child link="${irb120_ns}link_2"/>
         <limit effort="20" lower="-1.91986" upper="1.91986" velocity="4.36332"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
 
@@ -130,7 +130,7 @@
         <parent link="${irb120_ns}link_2"/>
         <child link="${irb120_ns}link_3"/>
         <limit effort="20" lower="-1.91986" upper="1.22173" velocity="4.36332"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
@@ -166,7 +166,7 @@
         <origin rpy="0 0 0" xyz="0 0 0.07"/>
         <parent link="${irb120_ns}link_3"/>
         <child link="${irb120_ns}link_4"/>
-        <limit effort="20" lower="-4" upper="4" velocity="5.58505"/>
+        <limit effort="20" lower="-2.792526" upper="2.792526" velocity="5.58505"/>
         <axis xyz="1 0 0"/>
         <dynamics damping="1" friction="0"/>
     </joint>
@@ -204,7 +204,7 @@
         <parent link="${irb120_ns}link_4"/>
         <child link="${irb120_ns}link_5"/>
         <limit effort="20" lower="-2.094395" upper="2.094395" velocity="5.58505"/>
-        <axis xyz="0 -1 0"/>
+        <axis xyz="0 1 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
 
@@ -240,7 +240,7 @@
         <origin rpy="0 0 0" xyz="0.072 0 0"/>
         <parent link="${irb120_ns}link_5"/>
         <child link="${irb120_ns}link_6"/>
-        <limit effort="20" lower="-4" upper="4" velocity="7.33038"/>
+        <limit effort="20" lower="-6.981317" upper="6.981317" velocity="7.33038"/>
         <axis xyz="1 0 0"/>
         <dynamics damping="1" friction="0.0"/>
     </joint>
@@ -272,7 +272,7 @@
 
     </link>
 
-    <!-- Description of the gripper -->
+    Description of the gripper
     <xacro:include filename="$(find rise_assembler_model)/urdf/robotiq_arg2f_140_model.xacro" />
 
     <!-- bolting between link 6 and gripper -->
