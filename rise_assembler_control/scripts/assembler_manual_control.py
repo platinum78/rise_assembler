@@ -62,6 +62,22 @@ if __name__ == "__main__":
             print "Degrees: ", [x * 180 / pi for x in angles]
             raw_input("Comments >> ")
         
+        elif input_str in ["h", "H"]:
+            print("q: Move to initial position, and then quit the controller.")
+            print("i: Move to initial position.")
+            print("p: Print current pose (including position and orientation).")
+            print("a: Print joint angles")
+            print("x, y, z, xyz: Linear translation by delta to each direction.")
+            print("tp: Linear translation, dimensions given in polar coordinate (dist, longitude, latitude).")
+            print("g: Manipulate gripper")
+            print("j: Revolute single joint")
+            print("ja: Go to joint angles (all joint)")
+            print("c: Move to given configuration of end-effector.")
+            print("cr: Does functionality of c, with units of radians.")
+            print("t: Linear translation to givein position.")
+            print("o: Change orientation in current position.")
+            print("h: Display this cheatsheet.")
+        
         # Position controls
         else:
             input_data = input_str.split(" ")
@@ -70,7 +86,7 @@ if __name__ == "__main__":
             pose_new = copy.deepcopy(pose_now)
 
             # Cartesian position control
-            if direction in ["x", "y", "z", "xyz"]:
+            if direction in ["x", "y", "z", "xyz", "tp"]:
                 print("Linear hovering mode...")
                 if direction == "x":
                     pose_new.position.x = pose_now.position.x + float(input_data[1])
@@ -82,6 +98,12 @@ if __name__ == "__main__":
                     pose_new.position.x = pose_now.position.x + float(input_data[1])
                     pose_new.position.y = pose_now.position.y + float(input_data[2])
                     pose_new.position.z = pose_now.position.z + float(input_data[3])
+                elif direction == "tp":
+                    # inputs are distance, longitude, and latitude each.
+                    dist, longitude, latitude = [float(x) for x in input_data[1:4]]
+                    pose_new.position.x = pose_now.position.x + dist * np.cos(latitude*np.pi/180) * np.cos(longitude*np.pi/180)
+                    pose_new.position.y = pose_now.position.y + dist * np.cos(latitude*np.pi/180) * np.sin(longitude*np.pi/180)
+                    pose_new.position.z = pose_now.position.z + dist * np.sin(latitude*np.pi/180)
                 
                 pose = [0] * 6
                 pose[0] = pose_new.position.x
@@ -113,6 +135,13 @@ if __name__ == "__main__":
                 pose[0:3] = [float(x) for x in input_data[1:4]]
                 pose[3:6] = [float(x) * pi / 180 for x in input_data[4:7]]
                 assembler.move_to_pose(pose)
+            
+            # Configuration mode
+            elif direction in ["ja", "jA", "Ja", "JA"]:
+                print("Move-to-joint-angle mode...")
+                angle = [0] * 6
+                angle[0:6] = [float(x) * pi / 180 for x in input_data[1:7]]
+                assembler.move_to_joint_pos(angle)
             
             elif direction in ["cr", "cR", "Cr", "CR"]:
                 print("Move-to-configuration mode with radian units...")

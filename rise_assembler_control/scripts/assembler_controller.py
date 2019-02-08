@@ -143,3 +143,17 @@ class rise_assembler_controller:
     
     def quaternion_to_rpy(self, quaternion):
         print euler_from_quaternion(quaternion)
+    
+    def get_pose(self):
+        pose = self.abb_irb120.get_current_pose().pose
+        q = pose.orientation
+        p = pose.position
+        rpy = euler_from_quaternion([q.x, q.y, q.z, q.w])
+        pose_list = [0] * 6
+        pose_list[0] = p.x
+        pose_list[1] = p.y
+        pose_list[2] = p.z
+        pose_list[3] = rpy[0]
+        pose_list[4] = rpy[1]
+        pose_list[5] = rpy[2]
+        return pose_list

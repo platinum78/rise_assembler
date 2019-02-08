@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "complex": "cpp"
-    }
+    },
+    "python.pythonPath": "/usr/bin/python3"
 }

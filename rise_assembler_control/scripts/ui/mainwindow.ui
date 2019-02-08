@@ -30,7 +30,10 @@
   </property>
   <property name="font">
    <font>
-    <family>Segoe UI</family>
+    <family>Ubuntu</family>
+    <pointsize>12</pointsize>
+    <weight>50</weight>
+    <bold>false</bold>
    </font>
   </property>
   <property name="windowTitle">
@@ -47,7 +50,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>6</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -146,7 +149,7 @@ background-color: white;</string>
      <attribute name="title">
       <string>Task Configurations</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="groupBox_manuals">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -212,7 +215,7 @@ background-color: white;</string>
         <rect>
          <x>20</x>
          <y>110</y>
-         <width>141</width>
+         <width>161</width>
          <height>21</height>
         </rect>
        </property>
@@ -223,9 +226,9 @@ background-color: white;</string>
       <widget class="QLabel" name="label_manuals_config_state">
        <property name="geometry">
         <rect>
-         <x>170</x>
+         <x>180</x>
          <y>110</y>
-         <width>181</width>
+         <width>391</width>
          <height>21</height>
         </rect>
        </property>
@@ -558,11 +561,11 @@ Number</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_manipulation_arm_1">
+    <widget class="QWidget" name="tab_arm1_manipulation">
      <attribute name="title">
       <string>Manual Control - Arm 1</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox_5">
+     <widget class="QGroupBox" name="arm1_linear_jogging">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -591,6 +594,12 @@ Number</string>
        </property>
        <property name="decimals">
         <number>1</number>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
        </property>
       </widget>
       <widget class="QLabel" name="label_6">
@@ -668,6 +677,12 @@ Number</string>
        <property name="decimals">
         <number>1</number>
        </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
       </widget>
       <widget class="QDoubleSpinBox" name="fine_z">
        <property name="geometry">
@@ -680,6 +695,12 @@ Number</string>
        </property>
        <property name="decimals">
         <number>1</number>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
        </property>
       </widget>
       <widget class="QLabel" name="label_12">
@@ -733,6 +754,12 @@ Number</string>
        <property name="decimals">
         <number>1</number>
        </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
+       </property>
       </widget>
       <widget class="QDoubleSpinBox" name="normal_x">
        <property name="geometry">
@@ -745,6 +772,12 @@ Number</string>
        </property>
        <property name="decimals">
         <number>1</number>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="normal_z">
@@ -759,6 +792,12 @@ Number</string>
        <property name="decimals">
         <number>1</number>
        </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
+       </property>
       </widget>
       <widget class="QDoubleSpinBox" name="large_y">
        <property name="geometry">
@@ -771,6 +810,12 @@ Number</string>
        </property>
        <property name="decimals">
         <number>1</number>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>100.000000000000000</double>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="large_x">
@@ -785,6 +830,12 @@ Number</string>
        <property name="decimals">
         <number>1</number>
        </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>100.000000000000000</double>
+       </property>
       </widget>
       <widget class="QDoubleSpinBox" name="large_z">
        <property name="geometry">
@@ -798,8 +849,14 @@ Number</string>
        <property name="decimals">
         <number>1</number>
        </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>100.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QFrame" name="linear_jogging">
+      <widget class="QFrame" name="arm1_joystick">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -819,7 +876,7 @@ Number</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QPushButton" name="button_x_plus_large">
+       <widget class="QPushButton" name="arm1_button_x_plus_large">
         <property name="geometry">
          <rect>
           <x>430</x>
@@ -834,7 +891,7 @@ Number</string>
 +</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_x_minus_fine">
+       <widget class="QPushButton" name="arm1_button_x_minus_fine">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -848,7 +905,7 @@ Number</string>
 -</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_plus_large">
+       <widget class="QPushButton" name="arm1_button_y_plus_large">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -861,7 +918,7 @@ Number</string>
          <string>+++</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_minus_normal">
+       <widget class="QPushButton" name="arm1_button_y_minus_normal">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -875,7 +932,7 @@ Number</string>
 --</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_plus_normal">
+       <widget class="QPushButton" name="arm1_button_z_plus_normal">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -889,7 +946,7 @@ Number</string>
 ++</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_x_plus_normal">
+       <widget class="QPushButton" name="arm1_button_x_plus_normal">
         <property name="geometry">
          <rect>
           <x>380</x>
@@ -903,7 +960,7 @@ Number</string>
 ++</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_minus_normal">
+       <widget class="QPushButton" name="arm1_button_z_minus_normal">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -917,7 +974,7 @@ Number</string>
 --</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_minus_large">
+       <widget class="QPushButton" name="arm1_button_z_minus_large">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -930,7 +987,7 @@ Number</string>
          <string>---</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_plus_normal">
+       <widget class="QPushButton" name="arm1_button_y_plus_normal">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -944,7 +1001,7 @@ Number</string>
 ++</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_minus_fine">
+       <widget class="QPushButton" name="arm1_button_y_minus_fine">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -958,7 +1015,7 @@ Number</string>
 -</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_plus_large">
+       <widget class="QPushButton" name="arm1_button_z_plus_large">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -971,7 +1028,7 @@ Number</string>
          <string>+++</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_minus_large">
+       <widget class="QPushButton" name="arm1_button_y_minus_large">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -984,7 +1041,7 @@ Number</string>
          <string>---</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_minus_fine">
+       <widget class="QPushButton" name="arm1_button_z_minus_fine">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -998,7 +1055,7 @@ Number</string>
 -</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_x_minus_large">
+       <widget class="QPushButton" name="arm1_button_x_minus_large">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -1013,7 +1070,7 @@ Number</string>
 -</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_y_plus_fine">
+       <widget class="QPushButton" name="arm1_button_y_plus_fine">
         <property name="geometry">
          <rect>
           <x>150</x>
@@ -1027,7 +1084,7 @@ Number</string>
 +</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_x_plus_fine">
+       <widget class="QPushButton" name="arm1_button_x_plus_fine">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -1041,7 +1098,7 @@ Number</string>
 +</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_x_minus_normal">
+       <widget class="QPushButton" name="arm1_button_x_minus_normal">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -1055,7 +1112,7 @@ Number</string>
 --</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_z_plus_fine">
+       <widget class="QPushButton" name="arm1_button_z_plus_fine">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -1069,7 +1126,7 @@ Number</string>
 +</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_delta_position_5">
+       <widget class="QPushButton" name="arm1_button_gripper_grip">
         <property name="geometry">
          <rect>
           <x>480</x>
@@ -1083,7 +1140,7 @@ Number</string>
 Gripper</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_delta_position_6">
+       <widget class="QPushButton" name="arm1_button_gripper_open">
         <property name="geometry">
          <rect>
           <x>480</x>
@@ -1095,6 +1152,20 @@ Gripper</string>
         <property name="text">
          <string>Open
 Gripper</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="arm1_button_init_pose">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>0</y>
+          <width>71</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Init
+Pose</string>
         </property>
        </widget>
       </widget>
@@ -1161,7 +1232,7 @@ Gripper</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBox_gripper_open">
+      <widget class="QSpinBox" name="arm1_spinBox_gripper_open">
        <property name="geometry">
         <rect>
          <x>470</x>
@@ -1187,7 +1258,7 @@ Gripper</string>
         <string>Gripper Grip:</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBox_gripper_grip">
+      <widget class="QSpinBox" name="arm1_spinBox_gripper_grip">
        <property name="geometry">
         <rect>
          <x>470</x>
@@ -1197,6 +1268,9 @@ Gripper</string>
         </rect>
        </property>
        <property name="maximum">
+        <number>255</number>
+       </property>
+       <property name="value">
         <number>255</number>
        </property>
       </widget>
@@ -1214,13 +1288,13 @@ Gripper</string>
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QGroupBox" name="numerical_controls">
+     <widget class="QGroupBox" name="arm1_numerical_controls">
       <property name="geometry">
        <rect>
         <x>650</x>
         <y>80</y>
         <width>591</width>
-        <height>311</height>
+        <height>331</height>
        </rect>
       </property>
       <property name="title">
@@ -1230,7 +1304,7 @@ Gripper</string>
        <property name="geometry">
         <rect>
          <x>300</x>
-         <y>30</y>
+         <y>50</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1251,7 +1325,7 @@ Gripper</string>
        <property name="geometry">
         <rect>
          <x>60</x>
-         <y>30</y>
+         <y>50</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1272,7 +1346,7 @@ Gripper</string>
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>30</y>
+         <y>50</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1289,41 +1363,11 @@ Gripper</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_pose_x">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>60</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_pose_y">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>60</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_pose_z">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>60</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="button_goto_position">
+      <widget class="QPushButton" name="arm1_button_goto_position">
        <property name="geometry">
         <rect>
          <x>490</x>
-         <y>30</y>
+         <y>50</y>
          <width>81</width>
          <height>91</height>
         </rect>
@@ -1333,11 +1377,11 @@ Gripper</string>
 Position</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="button_delta_position">
+      <widget class="QPushButton" name="arm1_button_delta_position">
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>30</y>
+         <y>50</y>
          <width>91</width>
          <height>91</height>
         </rect>
@@ -1347,21 +1391,11 @@ Position</string>
 Position</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_yaw">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>170</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_42">
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>140</y>
+         <y>160</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -1382,7 +1416,7 @@ Position</string>
        <property name="geometry">
         <rect>
          <x>290</x>
-         <y>140</y>
+         <y>160</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -1399,31 +1433,11 @@ Position</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_pitch">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>170</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_roll">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>170</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="button_delta_orientation">
+      <widget class="QPushButton" name="arm1_button_delta_orientation">
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>140</y>
+         <y>160</y>
          <width>91</width>
          <height>91</height>
         </rect>
@@ -1433,11 +1447,11 @@ Position</string>
 Orientation</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="button_goto_orientation">
+      <widget class="QPushButton" name="arm1_button_goto_orientation">
        <property name="geometry">
         <rect>
          <x>490</x>
-         <y>140</y>
+         <y>160</y>
          <width>81</width>
          <height>91</height>
         </rect>
@@ -1451,7 +1465,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>140</y>
+         <y>160</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -1468,11 +1482,11 @@ Orientation</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QPushButton" name="buttron_delta_pose">
+      <widget class="QPushButton" name="arm1_button_delta_pose">
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>250</y>
+         <y>270</y>
          <width>271</width>
          <height>41</height>
         </rect>
@@ -1481,11 +1495,11 @@ Orientation</string>
         <string>DELTA Pose</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="button_goto_pose">
+      <widget class="QPushButton" name="arm1_button_goto_pose">
        <property name="geometry">
         <rect>
          <x>300</x>
-         <y>250</y>
+         <y>270</y>
          <width>271</width>
          <height>41</height>
         </rect>
@@ -1498,7 +1512,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>100</y>
+         <y>120</y>
          <width>181</width>
          <height>31</height>
         </rect>
@@ -1517,7 +1531,7 @@ Orientation</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QRadioButton" name="millimeters">
+       <widget class="QRadioButton" name="arm1_xyz_millimeters">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -1534,8 +1548,11 @@ Orientation</string>
         <property name="text">
          <string>Millimeters</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
-       <widget class="QRadioButton" name="meters">
+       <widget class="QRadioButton" name="arm1_xyz_meters">
         <property name="geometry">
          <rect>
           <x>110</x>
@@ -1558,7 +1575,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>210</y>
+         <y>230</y>
          <width>191</width>
          <height>31</height>
         </rect>
@@ -1577,7 +1594,7 @@ Orientation</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QRadioButton" name="degrees_2">
+       <widget class="QRadioButton" name="arm1_rpy_degrees">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -1597,8 +1614,11 @@ Orientation</string>
         <property name="text">
          <string>Degrees</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
-       <widget class="QRadioButton" name="radians_2">
+       <widget class="QRadioButton" name="arm1_rpy_radians">
         <property name="geometry">
          <rect>
           <x>110</x>
@@ -1617,8 +1637,184 @@ Orientation</string>
         </property>
        </widget>
       </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_x">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>80</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_y">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>80</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_z">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>80</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_r">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_p">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>190</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="arm1_nc_y_">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>190</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="minimum">
+        <double>-1000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="arm1_reset_pose">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>0</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Reset</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="arm1_get_pose">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>0</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Get Pose</string>
+       </property>
+      </widget>
      </widget>
-     <widget class="QGroupBox" name="end_effector_pose">
+     <widget class="QGroupBox" name="arm1_end_effector_pose">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1634,7 +1830,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>610</x>
-         <y>30</y>
+         <y>40</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -1655,7 +1851,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>30</y>
+         <y>40</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1676,7 +1872,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>1010</x>
-         <y>30</y>
+         <y>40</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -1697,7 +1893,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>30</y>
+         <y>40</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1718,7 +1914,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>220</x>
-         <y>30</y>
+         <y>40</y>
          <width>21</width>
          <height>21</height>
         </rect>
@@ -1739,7 +1935,7 @@ Orientation</string>
        <property name="geometry">
         <rect>
          <x>800</x>
-         <y>30</y>
+         <y>40</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -1756,11 +1952,11 @@ Orientation</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="x">
+      <widget class="QLabel" name="arm1_x">
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1777,11 +1973,11 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="y">
+      <widget class="QLabel" name="arm1_y">
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1798,11 +1994,11 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="z">
+      <widget class="QLabel" name="arm1_z">
        <property name="geometry">
         <rect>
          <x>450</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1819,11 +2015,11 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="r">
+      <widget class="QLabel" name="arm1_r">
        <property name="geometry">
         <rect>
          <x>660</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1840,11 +2036,11 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="p">
+      <widget class="QLabel" name="arm1_p">
        <property name="geometry">
         <rect>
          <x>860</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1861,11 +2057,11 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="y_">
+      <widget class="QLabel" name="arm1_y_">
        <property name="geometry">
         <rect>
          <x>1060</x>
-         <y>30</y>
+         <y>40</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1882,20 +2078,33 @@ Orientation</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
+      <widget class="QPushButton" name="arm1_update_pose">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>0</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
      </widget>
-     <widget class="QGroupBox" name="joint_revolution">
+     <widget class="QGroupBox" name="arm1_joint_revolution">
       <property name="geometry">
        <rect>
         <x>650</x>
-        <y>410</y>
+        <y>430</y>
         <width>591</width>
-        <height>361</height>
+        <height>341</height>
        </rect>
       </property>
       <property name="title">
        <string>Joint Revolution</string>
       </property>
-      <widget class="QSlider" name="slider_joint1_angle">
+      <widget class="QSlider" name="arm1_slider_joint1_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -1903,6 +2112,12 @@ Orientation</string>
          <width>391</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <number>-165</number>
+       </property>
+       <property name="maximum">
+        <number>165</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1947,7 +2162,7 @@ Orientation</string>
         <string>Joint 2</string>
        </property>
       </widget>
-      <widget class="QSlider" name="slider_joint2_angle">
+      <widget class="QSlider" name="arm1_slider_joint2_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -1955,6 +2170,12 @@ Orientation</string>
          <width>391</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <number>-110</number>
+       </property>
+       <property name="maximum">
+        <number>110</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1973,7 +2194,7 @@ Orientation</string>
         <string>Joint 3</string>
        </property>
       </widget>
-      <widget class="QSlider" name="slider_joint3_angle">
+      <widget class="QSlider" name="arm1_slider_joint3_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -1981,6 +2202,12 @@ Orientation</string>
          <width>391</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <number>-70</number>
+       </property>
+       <property name="maximum">
+        <number>70</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1999,7 +2226,7 @@ Orientation</string>
         <string>Joint 4</string>
        </property>
       </widget>
-      <widget class="QSlider" name="slider_joint4_angle">
+      <widget class="QSlider" name="arm1_slider_joint4_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -2007,6 +2234,12 @@ Orientation</string>
          <width>391</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <number>-160</number>
+       </property>
+       <property name="maximum">
+        <number>160</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -2025,7 +2258,7 @@ Orientation</string>
         <string>Joint 5</string>
        </property>
       </widget>
-      <widget class="QSlider" name="slider_joint5_angle">
+      <widget class="QSlider" name="arm1_slider_joint5_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -2033,6 +2266,12 @@ Orientation</string>
          <width>391</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <number>-120</number>
+       </property>
+       <property name="maximum">
+        <number>120</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -2051,7 +2290,7 @@ Orientation</string>
         <string>Joint 6</string>
        </property>
       </widget>
-      <widget class="QSlider" name="slider_joint6_angle">
+      <widget class="QSlider" name="arm1_slider_joint6_angle">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -2060,11 +2299,20 @@ Orientation</string>
          <height>22</height>
         </rect>
        </property>
+       <property name="minimum">
+        <number>-400</number>
+       </property>
+       <property name="maximum">
+        <number>400</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QPushButton" name="delta_angle">
+      <widget class="QPushButton" name="arm1_delta_angle">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -2077,7 +2325,7 @@ Orientation</string>
         <string>DELTA Angle</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="goto_angle">
+      <widget class="QPushButton" name="arm1_goto_angle">
        <property name="geometry">
         <rect>
          <x>300</x>
@@ -2090,12 +2338,12 @@ Orientation</string>
         <string>GOTO Angle</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="button_reset_angle">
+      <widget class="QPushButton" name="arm1_button_reset_angles">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>460</x>
          <y>30</y>
-         <width>221</width>
+         <width>111</width>
          <height>31</height>
         </rect>
        </property>
@@ -2103,7 +2351,7 @@ Orientation</string>
         <string>Reset</string>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint1_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint1_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2112,8 +2360,14 @@ Orientation</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="minimum">
+        <double>-165.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>165.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint2_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint2_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2122,8 +2376,14 @@ Orientation</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="minimum">
+        <double>-110.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>110.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint3_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint3_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2132,8 +2392,14 @@ Orientation</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="minimum">
+        <double>-70.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>70.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint4_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint4_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2142,8 +2408,14 @@ Orientation</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="minimum">
+        <double>-160.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>160.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint5_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint5_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2152,8 +2424,14 @@ Orientation</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="minimum">
+        <double>-120.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>120.000000000000000</double>
+       </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="spinbox_joint6_angle">
+      <widget class="QDoubleSpinBox" name="arm1_spinbox_joint6_angle">
        <property name="geometry">
         <rect>
          <x>480</x>
@@ -2161,6 +2439,12 @@ Orientation</string>
          <width>91</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="minimum">
+        <double>-400.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>400.000000000000000</double>
        </property>
       </widget>
       <widget class="QFrame" name="angle_mode">
@@ -2186,7 +2470,7 @@ Orientation</string>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QRadioButton" name="degrees">
+       <widget class="QRadioButton" name="arm1_joint_delta">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -2204,10 +2488,13 @@ Orientation</string>
          <string notr="true">border-style: none;</string>
         </property>
         <property name="text">
-         <string>Degrees</string>
+         <string>DELTA</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radians">
+       <widget class="QRadioButton" name="arm1_joint_goto">
         <property name="geometry">
          <rect>
           <x>110</x>
@@ -2222,9 +2509,22 @@ Orientation</string>
          </font>
         </property>
         <property name="text">
-         <string>Radians</string>
+         <string>GOTO</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="arm1_button_get_joint_angles">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>30</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Get Angles</string>
+       </property>
       </widget>
      </widget>
      <widget class="QLabel" name="label_46">
@@ -2238,8 +2538,10 @@ Orientation</string>
       </property>
       <property name="font">
        <font>
-        <family>Segoe UI</family>
-        <pointsize>10</pointsize>
+        <family>Ubuntu</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2254,7 +2556,7 @@ background-color: white;</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_manipulation_arm_2">
+    <widget class="QWidget" name="tab_arm2_manipulation">
      <attribute name="title">
       <string>Manual Control - Arm 2</string>
      </attribute>
@@ -2960,7 +3262,7 @@ Orientation</string>
 background-color: white;</string>
       </property>
       <property name="text">
-       <string>NUROMEKA Indy7</string>
+       <string>NEUROMEKA Indy7</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -3487,7 +3789,7 @@ background-color: white;</string>
 Gripper</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="button_delta_position_10">
+       <widget class="QPushButton" name="button_gripper_open_2">
         <property name="geometry">
          <rect>
           <x>480</x>
@@ -3601,6 +3903,9 @@ Gripper</string>
         </rect>
        </property>
        <property name="maximum">
+        <number>255</number>
+       </property>
+       <property name="value">
         <number>255</number>
        </property>
       </widget>
@@ -3950,20 +4255,10 @@ Gripper</string>
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tab_task_macro">
      <attribute name="title">
-      <string>Task Macro Record</string>
+      <string>Position Record</string>
      </attribute>
-     <widget class="QListView" name="listView">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>531</width>
-        <height>791</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QGroupBox" name="define_task">
       <property name="geometry">
        <rect>
@@ -3981,7 +4276,7 @@ Gripper</string>
         <rect>
          <x>20</x>
          <y>25</y>
-         <width>161</width>
+         <width>181</width>
          <height>151</height>
         </rect>
        </property>
@@ -3993,7 +4288,7 @@ Gripper</string>
          <rect>
           <x>10</x>
           <y>25</y>
-          <width>141</width>
+          <width>151</width>
           <height>19</height>
          </rect>
         </property>
@@ -4006,7 +4301,7 @@ Gripper</string>
          <rect>
           <x>10</x>
           <y>100</y>
-          <width>141</width>
+          <width>151</width>
           <height>19</height>
          </rect>
         </property>
@@ -4019,7 +4314,7 @@ Gripper</string>
          <rect>
           <x>10</x>
           <y>125</y>
-          <width>141</width>
+          <width>151</width>
           <height>19</height>
          </rect>
         </property>
@@ -4032,12 +4327,12 @@ Gripper</string>
          <rect>
           <x>10</x>
           <y>75</y>
-          <width>141</width>
+          <width>151</width>
           <height>19</height>
          </rect>
         </property>
         <property name="text">
-         <string>Approach&gt;Linear</string>
+         <string>Linear Approach</string>
         </property>
        </widget>
        <widget class="QRadioButton" name="radioButton_31">
@@ -4045,7 +4340,7 @@ Gripper</string>
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>141</width>
+          <width>151</width>
           <height>19</height>
          </rect>
         </property>
@@ -4057,9 +4352,9 @@ Gripper</string>
       <widget class="QLabel" name="label_gripper_grip_2">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>200</x>
          <y>70</y>
-         <width>101</width>
+         <width>111</width>
          <height>31</height>
         </rect>
        </property>
@@ -4070,9 +4365,9 @@ Gripper</string>
       <widget class="QLabel" name="label_gripper_open_2">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>200</x>
          <y>30</y>
-         <width>101</width>
+         <width>111</width>
          <height>31</height>
         </rect>
        </property>
@@ -4086,7 +4381,7 @@ Gripper</string>
       <widget class="QSpinBox" name="spinBox">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>320</x>
          <y>30</y>
          <width>61</width>
          <height>31</height>
@@ -4099,7 +4394,7 @@ Gripper</string>
       <widget class="QSpinBox" name="spinBox_2">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>320</x>
          <y>70</y>
          <width>61</width>
          <height>31</height>
@@ -4176,6 +4471,86 @@ Gripper</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_record_pose">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>370</y>
+        <width>71</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Record
+Pose</string>
+      </property>
+     </widget>
+     <widget class="QListView" name="listView">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>551</width>
+        <height>501</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="pose_copy_radian">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>370</y>
+        <width>501</width>
+        <height>32</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="pose_copy_degree">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>410</y>
+        <width>501</width>
+        <height>32</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_3">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>450</y>
+        <width>501</width>
+        <height>32</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_15">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>370</y>
+        <width>66</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Radian</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>680</x>
+        <y>410</y>
+        <width>66</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Degree</string>
       </property>
      </widget>
     </widget>
