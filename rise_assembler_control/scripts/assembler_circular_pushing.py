@@ -14,7 +14,7 @@ from moveit_commander.conversions import pose_to_list
 from moveit_msgs.msg import PositionIKRequest
 from geometry_msgs.msg import Quaternion, Pose
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
+from tf.transformations import quaternion_from_euler, euler_from_quaternion, quaternion_matrix
 import numpy as np
 
 def circular_path(x_, y_, theta_, move_angle, radius, hand_length, direction, path_resolution=0.01):
@@ -61,22 +61,27 @@ if __name__ == "__main__":
     r = rpy[0]
     p = rpy[1]
     y_ = rpy[2]
+    rotation_matrix = quaternion_matrix([q.x, q.y, q.z, q.w])
+    print rotation_matrix
+    v = np.matmul(rotation_matrix, np.array([[1], [0], [0], [0]]))
+    print v
+    plane_angle = np.arctan2(v[1,0], v[0,0])
 
     ########################################
     # PART TO SETUP
     ########################################
 
     hand_inclination = 10       # Given in degrees
-    move_angle = 45             # Given in degrees
+    move_angle = 10             # Given in degrees
     circle_direction = "ccw"
     hand_length = 0.2
-    path_radius = 0.05
-    path_resolution = 0.0005
+    path_radius = 0.2
+    path_resolution = 0.01
 
     ########################################
     ########################################
-    print x, y, y_
-    x_r, y_r, theta_r = circular_path(x_=x, y_=x, theta_=y_, move_angle=move_angle*np.pi/180, radius=path_radius, \
+    print plane_angle * 180 / np.pi
+    x_r, y_r, theta_r = circular_path(x_=x, y_=x, theta_=plane_angle, move_angle=move_angle*np.pi/180, radius=path_radius, \
                                       hand_length=hand_length, direction=circle_direction,  path_resolution=path_resolution)
     x_r = np.ndarray.tolist(x_r)
     y_r = np.ndarray.tolist(y_r)
@@ -96,7 +101,10 @@ if __name__ == "__main__":
         pose_circle.orientation.z = q[2]
         pose_circle.orientation.w = q[3]
         poses.append(pose_circle)
+    print "Current pose: "
     print pose_current
+    print ""
+    print "Planned poses: "
     for pose in poses:
         print pose, "\n"
 
