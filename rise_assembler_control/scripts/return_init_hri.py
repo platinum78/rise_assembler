@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     #assembler.move_to_init_pos()
     #assembler.set_gripper_pos(180)
-    assembler.move_by_cartesian_path([-0.153797, 0.414940, -0.006671, -1.557638, 0.189843, -0.002580])
+    assembler.move_by_cartesian_path([-0.283797, 0.264940, 0.079329, -1.557638, 0.189843, -0.002580])
     #assembler.move_by_cartesian_path([0.046211, 0.414942, -0.006675, -1.557577, 0.189900, -0.002480])
     #assembler.set_gripper_pos(255)
     #assembler.move_by_cartesian_path([0.246211, 0.454944, -0.006677, -1.557616, 0.189907, -0.002457])

@@ -28,7 +28,7 @@ def circular_path(current_pose, radius, angle, direction, ee_length, path_resolu
     planar_angle = np.arctan2(v[1], v[0])
     
     slice_cnt = radius * abs(angle) / path_resolution
-    angles = np.linspace(0, abs(angle), slice_cnt)
+    angles = np.linspace(0, abs(angle), slice_cnt, True)
     if angle < 0:
         angles *= -1
 
@@ -50,6 +50,8 @@ def circular_path(current_pose, radius, angle, direction, ee_length, path_resolu
     pos = np.ndarray.tolist(pos)
 
     rpy = []
+    if direction == "cw":
+        angles *= -1
     for theta in angles:
         matrix = np.zeros([4,4])
         matrix[0:3,0:3] = np.matmul(rotation_matrix_z(theta), orientation_matrix)
@@ -76,7 +78,7 @@ if __name__ == "__main__":
     rospy.loginfo("SYSTEM READY!")
 
 
-    poses = circular_path(assembler.get_pose(), 0.24, -np.pi/2, "ccw", 0.3, 0.01)
+    poses = circular_path(current_pose=assembler.get_pose(), radius=0.2, angle=-np.pi/2, direction="ccw", ee_length=0.3, path_resolution=0.01)
     
     waypoints = []
     for pose in poses:
