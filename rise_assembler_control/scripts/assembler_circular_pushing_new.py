@@ -98,4 +98,3 @@ if __name__ == "__main__":
     
     rospy.loginfo("Moving on Cartesian path...")
     assembler.abb_irb120.execute(trajectory_plan, wait=True)
-
