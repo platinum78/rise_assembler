@@ -5,7 +5,27 @@
 
 ## 1. How to Install
 
-Extract the metapackage `rise_assembler` into `${ros_workspace}/src`. `catkin_make` your workspace. That's it, you're ready to go!
+### 1.1. System Requirements
+
+This package is written an tested on **Ubuntu 16.04 + ROS Kinetic** environment. Dependencies are also for this environment.
+
+### 1.2. Dependencies Prerequisites
+
+There are a number of dependencies in this package, since the ABB robot is operated by ROS-Industrial package. Please install all the packages listed below in your Ubuntu PC, in the given order.
+
+* ros-kinetic-desktop-full
+* ros-kinetic-industrial-core
+* ros-kinetic-industrial-msgs
+* ros-kinetic-industrial-robot-client
+* ros-kinetic-industrial-robot-simulator
+* ros-kinetic-industrial-utils
+* ros-kinetic-abb
+* abb_experimental [1]
+* ros-kinetic-moveit
+
+    [1] abb_experimental is literally *experimental*, so it is not configured as an `.deb` packag. Therefore, it should be downloaded from the Github reposity. Do `git clone https://github.com/ros-industrial/abb_experimental` inside `${ros_workspace}/src`.
+
+Now,Extract the metapackage `rise_assembler` into `${ros_workspace}/src`. `catkin_make` your workspace.
 
 
 ## 2. Structure of Package
@@ -27,5 +47,6 @@ You can use the GUI controller. Type `rosrun rise_assembler assembler_gui_contro
 
 The script `assembler_controller.py` provides a convenient method to plan paths. One should give the pose of end-effector in the following form; [x, y, z, roll, pitch, yaw].
 
-* `move_to_pose()`: 
-* fdf
+* `move_to_pose()`: move to designated pose 
+* `move_by_cartesian_path()`: move to designated pose, in straight path.
+* `rotate_joint()`: rotate specific joint by desiged angle. This method gets the angles of all 6 joints, add the given value to specified joint, and then makes the robot go to that configuration. Therefore, the joints that are not designated to move might move by a little angle, due to controller errors.

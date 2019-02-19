@@ -142,9 +142,6 @@ class rise_assembler_controller:
         abb_irb120.go(wait=True)
         rospy.loginfo("Joint %d rotated by %6f radians." % (joint_idx+1, angle))
     
-    def quaternion_to_rpy(self, quaternion):
-        print euler_from_quaternion(quaternion)
-    
     def get_pose(self):
         pose = self.abb_irb120.get_current_pose().pose
         q = pose.orientation
